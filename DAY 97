@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<pair<int,int>> intervals(n);
+    for (int i = 0; i < n; i++) {
+        cin >> intervals[i].first >> intervals[i].second;
+    }
+
+    sort(intervals.begin(), intervals.end());
+
+    priority_queue<int, vector<int>, greater<int>> pq;
+
+    for (auto& interval : intervals) {
+        if (!pq.empty() && pq.top() <= interval.first) {
+            pq.pop();
+        }
+        pq.push(interval.second);
+    }
+
+    cout << pq.size();
+    return 0;
+}
