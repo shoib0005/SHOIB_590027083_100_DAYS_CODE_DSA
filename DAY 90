@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool canPaint(vector<int>& boards, int k, int maxTime) {
+    int painters = 1;
+    int time = 0;
+
+    for (int b : boards) {
+        if (b > maxTime) return false;
+
+        if (time + b > maxTime) {
+            painters++;
+            time = b;
+        } else {
+            time += b;
+        }
+    }
+
+    return painters <= k;
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    vector<int> boards(n);
+    for (int i = 0; i < n; i++) cin >> boards[i];
+
+    int left = *max_element(boards.begin(), boards.end());
+    int right = accumulate(boards.begin(), boards.end(), 0);
+    int ans = right;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (canPaint(boards, k, mid)) {
+            ans = mid;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    cout << ans;
+    return 0;
+}
